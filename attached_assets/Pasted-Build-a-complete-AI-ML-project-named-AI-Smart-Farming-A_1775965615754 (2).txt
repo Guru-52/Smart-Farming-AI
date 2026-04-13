@@ -1,0 +1,90 @@
+Build a complete AI/ML project named **"AI Smart Farming Assistant using Endee (RAG + ML)"**.
+
+The project must be a real-world farming assistant that helps users (farmers) to:
+
+1. Predict the best crop based on environmental inputs
+2. Ask farming-related questions and get intelligent answers using a RAG pipeline
+
+Requirements:
+
+1. **Machine Learning Model**
+
+* Train a crop recommendation model using a dataset (soil pH, rainfall, temperature, humidity, etc.)
+* Use a simple algorithm like RandomForestClassifier
+* Save the trained model as model.pkl
+* The model should predict the best crop
+
+2. **Vector Database (Endee)**
+
+* Use Endee as the vector database (MANDATORY)
+* Store farming knowledge such as:
+
+  * Crop requirements
+  * Soil types
+  * Farming tips
+* Convert text data into embeddings using sentence-transformers
+* Store embeddings in Endee with metadata
+
+3. **Semantic Search**
+
+* When a user asks a question, convert the query into embedding
+* Retrieve top relevant results from Endee
+* Use similarity search (top_k results)
+
+4. **RAG Pipeline**
+
+* Combine retrieved context from Endee with the user query
+* Send both to an LLM (OpenAI or similar)
+* Generate a meaningful answer based on retrieved knowledge
+
+5. **Streamlit Web App**
+
+* Build a simple UI with:
+
+  * Input fields (pH, rainfall, temperature, humidity)
+  * Button to predict crop
+  * Text box to ask farming questions
+* Display:
+
+  * Recommended crop
+  * Explanation
+  * Farming advice
+
+6. **Project Structure**
+   Create clean files:
+
+* app.py (main Streamlit app)
+* train_model.py (ML training)
+* utils.py (embedding + retrieval functions)
+* data.txt (farming knowledge)
+* requirements.txt
+* README.md
+
+7. **README.md must include**
+
+* Project overview
+* Features (ML + Endee + RAG)
+* Architecture explanation
+* Setup instructions
+* How Endee is used
+
+8. **Libraries to use**
+
+* streamlit
+* scikit-learn
+* pandas
+* sentence-transformers
+* openai (or any LLM API)
+* endee (local vector DB)
+
+9. Ensure:
+
+* Code is clean and runnable
+* Add comments explaining each step
+* No missing dependencies
+* Everything works end-to-end
+
+Goal:
+Deliver a production-style AI system demonstrating ML + Vector Database + RAG for a real-world farming use case.
+
+Generate full working code for all files.

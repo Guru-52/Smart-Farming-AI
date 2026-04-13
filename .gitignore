@@ -1,0 +1,84 @@
+<<<<<<< HEAD
+# See https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+
+# compiled output
+dist
+tmp
+out-tsc
+*.tsbuildinfo
+.expo
+.expo-shared
+
+# dependencies
+node_modules
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# misc
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+/typings
+
+# System Files
+.DS_Store
+Thumbs.db
+
+.cursor/rules/nx-rules.mdc
+.github/instructions/nx.instructions.md
+
+# Replit
+.cache/
+.local/
+=======
+
+# Ignore build directory
+build/
+# Ignore build like directory
+build*/
+# Ignore all files in the build directory
+build/*
+
+# Ignore tests build directory
+tests/build/
+tests/build*/
+
+# Test binaries
+tests/**/ndd_filter_test
+
+# macOS debug symbols
+*.dSYM/
+
+# Sometimes data files are created for tetsing
+data/
+data/*
+
+# VS Code directory
+.vscode/
+.vscode/*
+
+# Frontend
+frontend/
+frontend/*
+
+# DS Store
+.DS_Store
+>>>>>>> f88759601e2ea9633d590d4c815b3155b64ebb34

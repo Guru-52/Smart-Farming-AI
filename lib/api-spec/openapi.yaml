@@ -1,0 +1,324 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: AI Smart Farming Assistant API
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: farming
+    description: Smart farming operations
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      description: Returns server health status
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+
+  /farming/predict-crop:
+    post:
+      operationId: predictCrop
+      tags: [farming]
+      summary: Predict best crop
+      description: Predicts the best crop based on soil and weather inputs using ML model
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CropPredictionInput"
+      responses:
+        "200":
+          description: Crop prediction result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CropPredictionResult"
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /farming/ask:
+    post:
+      operationId: askFarmingQuestion
+      tags: [farming]
+      summary: Ask a farming question
+      description: Uses RAG pipeline to answer farming-related questions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FarmingQuestionInput"
+      responses:
+        "200":
+          description: Farming question answer
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FarmingQuestionResult"
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /farming/knowledge:
+    get:
+      operationId: getKnowledgeBase
+      tags: [farming]
+      summary: Get farming knowledge entries
+      description: Returns all farming knowledge entries in the vector store
+      responses:
+        "200":
+          description: List of knowledge entries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/KnowledgeEntry"
+
+  /farming/crop-stats:
+    get:
+      operationId: getCropStats
+      tags: [farming]
+      summary: Get crop statistics
+      description: Returns stats about supported crops and model accuracy
+      responses:
+        "200":
+          description: Crop statistics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CropStats"
+
+  /farming/recent-predictions:
+    get:
+      operationId: getRecentPredictions
+      tags: [farming]
+      summary: Get recent crop predictions
+      description: Returns recent crop prediction history
+      responses:
+        "200":
+          description: Recent predictions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PredictionRecord"
+
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+
+    CropPredictionInput:
+      type: object
+      properties:
+        nitrogen:
+          type: number
+          description: Nitrogen content in soil (kg/ha)
+        phosphorus:
+          type: number
+          description: Phosphorus content in soil (kg/ha)
+        potassium:
+          type: number
+          description: Potassium content in soil (kg/ha)
+        temperature:
+          type: number
+          description: Temperature in Celsius
+        humidity:
+          type: number
+          description: Humidity percentage
+        ph:
+          type: number
+          description: Soil pH level
+        rainfall:
+          type: number
+          description: Rainfall in mm
+      required:
+        - nitrogen
+        - phosphorus
+        - potassium
+        - temperature
+        - humidity
+        - ph
+        - rainfall
+
+    CropPredictionResult:
+      type: object
+      properties:
+        crop:
+          type: string
+          description: Recommended crop name
+        confidence:
+          type: number
+          description: Confidence score (0-1)
+        explanation:
+          type: string
+          description: AI-generated explanation of why this crop is recommended
+        farmingTips:
+          type: string
+          description: Specific farming tips for the predicted crop
+        alternativeCrops:
+          type: array
+          items:
+            type: string
+          description: Alternative crop options
+      required:
+        - crop
+        - confidence
+        - explanation
+        - farmingTips
+        - alternativeCrops
+
+    FarmingQuestionInput:
+      type: object
+      properties:
+        question:
+          type: string
+          description: The farming-related question
+      required:
+        - question
+
+    FarmingQuestionResult:
+      type: object
+      properties:
+        answer:
+          type: string
+          description: AI-generated answer based on retrieved knowledge
+        sources:
+          type: array
+          items:
+            type: string
+          description: Knowledge sources used to generate the answer
+        relatedTopics:
+          type: array
+          items:
+            type: string
+          description: Related topics the user might want to explore
+      required:
+        - answer
+        - sources
+        - relatedTopics
+
+    KnowledgeEntry:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        category:
+          type: string
+        content:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+      required:
+        - id
+        - title
+        - category
+        - content
+        - tags
+
+    CropStats:
+      type: object
+      properties:
+        totalCrops:
+          type: integer
+        totalKnowledgeEntries:
+          type: integer
+        totalPredictions:
+          type: integer
+        popularCrops:
+          type: array
+          items:
+            type: object
+            properties:
+              crop:
+                type: string
+              count:
+                type: integer
+            required:
+              - crop
+              - count
+        modelAccuracy:
+          type: number
+      required:
+        - totalCrops
+        - totalKnowledgeEntries
+        - totalPredictions
+        - popularCrops
+        - modelAccuracy
+
+    PredictionRecord:
+      type: object
+      properties:
+        id:
+          type: integer
+        crop:
+          type: string
+        confidence:
+          type: number
+        nitrogen:
+          type: number
+        phosphorus:
+          type: number
+        potassium:
+          type: number
+        temperature:
+          type: number
+        humidity:
+          type: number
+        ph:
+          type: number
+        rainfall:
+          type: number
+        createdAt:
+          type: string
+      required:
+        - id
+        - crop
+        - confidence
+        - nitrogen
+        - phosphorus
+        - potassium
+        - temperature
+        - humidity
+        - ph
+        - rainfall
+        - createdAt
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error
